@@ -14,16 +14,15 @@
 #include <sstream>   // ostringstream
 #include <iterator>  // ostream_iterator
 
+// helper functions
 int count = 1;
 int myGenerator() {
     return count++;
 }
 
-void print(int n) {
-    std::cout << n << "\n";
-}
-// for_each(myDeque.begin(), myDeque.end(), print);
+bool isEven(int num) {return (num % 2) == 0;}
 
+// unit tests
 void testDeque()
 {
     const int expectedCumSum = 55;
@@ -53,7 +52,8 @@ void testString()
     std::string upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     // convert to uppercase with transform
-    std::transform(lowerCase.begin(), lowerCase.end(), lowerCase.begin(), toupper);
+    std::transform(lowerCase.begin(), lowerCase.end(), lowerCase.begin(),
+        toupper);
 
     // assert all uppercase
     if (lowerCase.compare(upperCase) != 0) {
@@ -63,8 +63,6 @@ void testString()
         std::clog << "testString PASSED\n";
     }
 }
-
-bool isEven(int num) {return (num % 2) == 0;}
 
 void testVector()
 {
