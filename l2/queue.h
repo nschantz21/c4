@@ -6,6 +6,7 @@
  *
  * Define Queue class
  */
+ #include <cstdlib>  // size_t
 
 template <typename T>
 class Queue
@@ -24,4 +25,6 @@ public:
 private:
     T *v_; // Elems in queue
     /* Any other private members you need */
+    size_t vsize_;
+    size_t vused_;
 };
