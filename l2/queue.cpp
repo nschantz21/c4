@@ -8,6 +8,7 @@
  */
 #include "queue.h"
 #include <cassert>
+#include <algorithm>
 
 // default constructor
 template<class T>
@@ -34,7 +35,7 @@ T* NewCopy(const T* src, size_t srcsize, size_t destsize)
     T* dest = new T[destsize];
     try
     {
-        copy(src, src+srcsize, dest);
+        std::copy(src, src+srcsize, dest);
     } catch (...) {
         delete[] dest;
         throw;
@@ -47,8 +48,8 @@ T* NewCopy(const T* src, size_t srcsize, size_t destsize)
 template<class T>
 Queue<T>::Queue(const Queue<T>& other):
     v_(NewCopy(other.v_, other.vsize_, other.vsize_)),
-    vsize_(other.vsize),
-    vused_(other.vsize)
+    vsize_(other.vsize_),
+    vused_(other.vsize_)
 {
 }
 
@@ -67,7 +68,9 @@ Queue<T>::operator=(const Queue<T>& other)
         delete[] v_;
         v_ = v_new;
         vsize_ = other.vsize_;
-        vused_ = other.vused;
+        vused_ = other.vused_;
     }
     return *this;
 }
+
+template class Queue<int>;

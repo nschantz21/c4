@@ -71,9 +71,9 @@ int main()
 {
     // Default Constructor
     testConstructor();
-    //testDestructor();
-    //testCopyConstructor();
-    //testAssignmentConstructor();
+    testDestructor();
+    testCopyConstructor();
+    testAssignmentConstructor();
 
     // Destructor
 
