@@ -39,45 +39,62 @@ void testAssignmentConstructor()
 
 void testPush()
 {
-
+    std::clog << "testPush\n";
+    Queue<int> myQueue;
+    myQueue.push(10);
 }
 
 void testPop()
 {
+    Queue<int> myQueue;
+    myQueue.push(5);
 
 }
 
 void testFront()
 {
-
+    std::clog << "testFront\n";
+    Queue<int> myQueue;
+    myQueue.push(1);
+    int someInt = myQueue.front();
+    assert(someInt == 1);
 }
 
 void testFrontConst()
 {
-
+    std::clog << "testFrontConst\n";
+    Queue<int> myQueue;
+    myQueue.push(1);
+    const int constInt = myQueue.front();
 }
 
 void testEmpty()
 {
-
+    std::clog << "testEmpty\n";
+    Queue<int> myQueue;
+    assert(myQueue.empty());
 }
 
 void testSize()
 {
-
+    std::clog << "testSize\n";
+    Queue<int> myQueue;
+    myQueue.push(1);
+    assert(myQueue.size() == 1);
 }
 
 int main()
 {
-    // Default Constructor
+    // unit tests
     testConstructor();
     testDestructor();
     testCopyConstructor();
     testAssignmentConstructor();
-
-    // Destructor
-
-    //
+    testPush(); 
+    testFront();
+    testFrontConst();
+    testEmpty();
+    testSize();
 
     return 0;
 }
