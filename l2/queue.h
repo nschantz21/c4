@@ -51,7 +51,10 @@ Queue<T>::~Queue()
 
 // helper function
 template<class T>
-T* NewCopy(const T* src, size_t srcsize, size_t destsize)
+T* NewCopy(
+    const T* src,
+    size_t srcsize,
+    size_t destsize)
 {
     assert(destsize >= srcsize);
     T* dest = new T[destsize];
@@ -69,9 +72,15 @@ T* NewCopy(const T* src, size_t srcsize, size_t destsize)
 // copy constructor
 template<class T>
 Queue<T>::Queue(const Queue<T>& other):
-    v_(NewCopy(other.v_, other.vsize_, other.vsize_)),
+    v_(
+        NewCopy(
+            other.v_,
+            other.vsize_,
+            other.vsize_
+        )
+    ),
     vsize_(other.vsize_),
-    vused_(other.vsize_)
+    vused_(other.vused_)
 {
 }
 
