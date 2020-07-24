@@ -13,9 +13,9 @@ using std::string;
 class StreamProcessorAlgorithm
 {
 public:
-    StreamProcessorAlgorithm(istream &in, ostream &out) /* ... */
-    virtual ~StreamProcessorAlgorithm() /* ... */
-    void process() /* ... */
+    StreamProcessorAlgorithm(istream &in, ostream &out)
+    virtual ~StreamProcessorAlgorithm()
+    void process()
 private:
     virtual bool filterToken(const string &token) const = 0;
     virtual void processToken(string &token) const = 0;
@@ -47,3 +47,4 @@ StreamProcessorAlgorithm::process()
         }
     }
 }
+
