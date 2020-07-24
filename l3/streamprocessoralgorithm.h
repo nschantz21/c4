@@ -7,6 +7,9 @@
  * Implement StreamProcessorAlgorithm class
  */
 
+#include <string>
+using std::string;
+
 class StreamProcessorAlgorithm
 {
 public:
@@ -19,3 +22,28 @@ private:
     istream &in_;
     ostream &out_;
 };
+
+// constructor
+StreamProcessorAlgorithm::StreamProcessorAlgorithm
+(istream &in, ostream &out): &in_(in), &out_(out)
+{}
+
+// destructor
+streamprocessoralgorithm::~StreamProcessorAlgorithm()
+{
+}
+
+// process
+void
+StreamProcessorAlgorithm::process()
+{
+    string token;
+    // while there's stuff coming in
+    while(token << in_)
+    {
+        if filterToken(token)
+        {
+            processToken(token);
+        }
+    }
+}
