@@ -2,21 +2,31 @@
  * Nicholas Schantz
  * Assignment 3
  * 2020-07-28
- * digitstrippingspa.h
+ * dsspa.h
  *
  * Implement DigitStrippingSPA class
  */
 
+#ifndef DSSPA_H
+#define DSSPA_H
+
 #include <algorithm>
-#include <cctype.h>
-#include "streamprocessoralgorithm.h"
+#include <cctype>
+#include "spa.h"
 
 class DigitStrippingSPA: public StreamProcessorAlgorithm
 {
+public:
+    DigitStrippingSPA(istream &in, ostream &out):
+        StreamProcessorAlgorithm(in, out)
+    {}
+
 private:
     virtual bool filterToken(const string &token) const;
     virtual void processToken(string &token) const;
-}
+};
+
+
 
 // only allow tokens containing at least one digit to pass through
 bool
@@ -37,4 +47,7 @@ DigitStrippingSPA::processToken(string &token) const
         ), 
         token.end()
     );
+    out_ << token << "\n";
 }
+
+#endif

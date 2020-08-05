@@ -2,34 +2,40 @@
  * Nicholas Schantz
  * Assignment 3
  * 2020-07-28
- * streamprocessoralgorithm.h
+ * spa.h
  *
  * Implement StreamProcessorAlgorithm class
  */
+#ifndef SPA_H
+#define SPA_H
 
+#include <iostream>
 #include <string>
 using std::string;
+using std::istream;
+using std::ostream;
 
 class StreamProcessorAlgorithm
 {
 public:
-    StreamProcessorAlgorithm(istream &in, ostream &out)
-    virtual ~StreamProcessorAlgorithm()
-    void process()
+    StreamProcessorAlgorithm(istream &in, ostream &out);
+    virtual ~StreamProcessorAlgorithm();
+    void process();
 private:
     virtual bool filterToken(const string &token) const = 0;
     virtual void processToken(string &token) const = 0;
+protected:
     istream &in_;
     ostream &out_;
 };
 
 // constructor
 StreamProcessorAlgorithm::StreamProcessorAlgorithm
-(istream &in, ostream &out): &in_(in), &out_(out)
+(istream &in, ostream &out): in_(in), out_(out)
 {}
 
 // destructor
-streamprocessoralgorithm::~StreamProcessorAlgorithm()
+StreamProcessorAlgorithm::~StreamProcessorAlgorithm()
 {
 }
 
@@ -39,12 +45,13 @@ StreamProcessorAlgorithm::process()
 {
     string token;
     // while there's stuff coming in
-    while(token << in_)
+    while(in_ >> token)
     {
-        if filterToken(token)
+        if (filterToken(token))
         {
             processToken(token);
         }
     }
 }
 
+#endif
