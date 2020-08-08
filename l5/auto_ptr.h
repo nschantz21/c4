@@ -39,38 +39,43 @@ private:
 
 
 // all template functions need to be defined in header
+// constructors
 template <typename X>
-auto_ptr<X>::auto_ptr(X* p = 0) throw() : ptr_(p)
-{}
+auto_ptr<X>::auto_ptr(X* p) throw() : ptr_(p) {}
 
-template<typename X>
-auto_ptr<X>::auto_ptr(auto_prt &ap) throw() : ptr_(ap.release()) {}
+template <typename X>
+auto_ptr<X>::auto_ptr(auto_ptr &ap) throw() : ptr_(ap.release()) {}
 
-template<typename X, typename Y>
+template <typename X>
+template <typename Y>
 auto_ptr<X>::auto_ptr(auto_ptr<Y>& ap) throw(): ptr_(ap.release()) {}
 
-auto_prt::~auto_prt() throw()
+// destructor
+template <typename X>
+auto_ptr<X>::~auto_ptr() throw()
 {
     delete ptr_;
 }
 
-template<X>
-auto_ptr<X>::auto_ptr<X>&
-operator=(auto_prt<X> &p) throw()
+// assignment operator
+template <typename X>
+auto_ptr<X>&
+auto_ptr<X>::operator=(auto_ptr &p) throw()
 {
     reset(p.release);
     return *this;
 }
 
 // convertible assignment operator
-template <typename X, typename Y>
+template <typename X>
+template <typename Y>
 auto_ptr<X>&
-operator=(auto_prt<Y>& p) throw()
+auto_ptr<X>::operator=(auto_ptr<Y>& p) throw()
 {
     reset(p.release());
     return *this;
 }
-
+/*
 X&
 operator*() const throw()
 {
@@ -111,7 +116,7 @@ auto_ptr::reset(X* p = 0) throw()
         ptr_ = p;
     }
 }
-
+*/
 
 
 #endif
