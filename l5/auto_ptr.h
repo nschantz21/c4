@@ -75,40 +75,42 @@ auto_ptr<X>::operator=(auto_ptr<Y>& p) throw()
     reset(p.release());
     return *this;
 }
-/*
+
+template <typename X>
 X&
-operator*() const throw()
+auto_ptr<X>::operator*() const throw()
 {
     assert(ptr_ != 0);
     return *ptr_;
 }
 
+template <typename X>
 X*
-auto_prt::operator->() const throw()
+auto_ptr<X>::operator->() const throw()
 {
     assert(ptr_ != 0);
     return ptr_;
 }
 
-template<X>
+template <typename X>
 X*
-auto_ptr::get() const thorw()
+auto_ptr<X>::get() const throw()
 {
     return ptr_;
 }
 
-template<X>
+template <typename X>
 X*
-auto_prt::release() throw()
+auto_ptr<X>::release() throw()
 {
     X* tmp = ptr_;
     ptr_ = 0;
     return tmp;
 }
 
-template<X>
+template <typename X>
 void
-auto_ptr::reset(X* p = 0) throw()
+auto_ptr<X>::reset(X* p) throw()
 {
     if (p != ptr_)
     {
@@ -116,7 +118,5 @@ auto_ptr::reset(X* p = 0) throw()
         ptr_ = p;
     }
 }
-*/
-
 
 #endif
