@@ -61,6 +61,22 @@ void testGet()
     assert(*(autoInt.get()) == 7);
 }
 
+void testArrow()
+{
+    clog << "testArrow\n";
+    
+    struct testClass
+    {
+        int testFunc()
+        {
+            return 12;
+        }
+    };
+
+    auto_ptr<testClass> autoInt(new testClass);
+    assert(autoInt->testFunc() == 12);
+}
+
 // assignment
 void testAssignment()
 {
@@ -112,6 +128,7 @@ int main()
     // accessors
     testDereference();
     testGet();
+    testArrow();
 
     // assignment
     testAssignment();
