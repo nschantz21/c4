@@ -48,7 +48,7 @@ auto_ptr<X>::auto_ptr(auto_ptr &ap) throw() : ptr_(ap.release()) {}
 
 template <typename X>
 template <typename Y>
-auto_ptr<X>::auto_ptr(auto_ptr<Y>& ap) throw(): ptr_(ap.release()) {}
+auto_ptr<X>::auto_ptr(auto_ptr<Y>& ap) throw(): ptr_(new X(*ap.release())) {}
 
 // destructor
 template <typename X>
@@ -62,7 +62,7 @@ template <typename X>
 auto_ptr<X>&
 auto_ptr<X>::operator=(auto_ptr &p) throw()
 {
-    reset(p.release);
+    reset(p.release());
     return *this;
 }
 
@@ -72,7 +72,7 @@ template <typename Y>
 auto_ptr<X>&
 auto_ptr<X>::operator=(auto_ptr<Y>& p) throw()
 {
-    reset(p.release());
+    reset(new X(*p.release()));
     return *this;
 }
 
