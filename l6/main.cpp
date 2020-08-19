@@ -2,59 +2,57 @@
  * Nicholas Schantz
  * 2020-08-18
  * main.cpp
- * Program to test pallindrome and compress algorithms
+ * Program to test palindrome and compress algorithms
  */
 #include <list>
 #include <iostream>
 #include <cassert>
 
-#include <algorithm>
-
 using std::list;
 using std::clog;
 
-#include "pallindrome.h"
+#include "palindrome.h"
 #include "compress.h"
 
-// pallindrome unit tests
-void testEmptyPallindrome()
+// palindrome unit tests
+void testEmptyPalindrome()
 {
-    std::clog << "testEmptyPallindrome\n";
+    std::clog << "testEmptyPalindrome\n";
     list<int> ls1;
-    assert(pallindrome(ls1.begin(), ls1.end()));
+    assert(palindrome(ls1.begin(), ls1.end()));
 }
 
-void testEvenPallindrome()
+void testEvenPalindrome()
 {
-    std::clog << "testEvenPallindrome\n";
+    std::clog << "testEvenPalindrome\n";
     int data[] = {0, 1, 2, 2, 1, 0};
     list<int> ls1(data, data + 6);
-    assert(pallindrome(ls1.begin(), ls1.end()));
+    assert(palindrome(ls1.begin(), ls1.end()));
 }
 
-void testOddPallindrome()
+void testOddPalindrome()
 {
-    std::clog << "testOddPallindrome\n";
+    std::clog << "testOddPalindrome\n";
     int data[] = {0, 1, 2, 3, 2, 1, 0};
     list<int> ls1(data, data + 7);
-    assert(pallindrome(ls1.begin(), ls1.end()));
+    assert(palindrome(ls1.begin(), ls1.end()));
 }
 
-void testEvenNonPallindrome()
+void testEvenNonPalindrome()
 {
-    std::clog << "testEvenNonPallindrome\n";
+    std::clog << "testEvenNonPalindrome\n";
     int data[] = {0, 1, 2, 4, 1, 0};
     list<int> ls1(data, data + 6);
-    assert(!pallindrome(ls1.begin(), ls1.end()));
+    assert(!palindrome(ls1.begin(), ls1.end()));
 
 }
 
-void testOddNonPallindrome()
+void testOddNonPalindrome()
 {
-    std::clog << "testOddNonPallindrome\n";
+    std::clog << "testOddNonPalindrome\n";
     int data[] = {0, 1, 2, 3, 3, 1, 0};
     list<int> ls1(data, data + 7);
-    assert(!pallindrome(ls1.begin(), ls1.end()));
+    assert(!palindrome(ls1.begin(), ls1.end()));
 }
 
 
@@ -75,10 +73,6 @@ void testNoConsecutiveDuplicates()
     list<int> ls1(data, data + 6), ls2;
     list<int> expected(ls1);
     compress(ls1.begin(), ls1.end(), back_inserter(ls2));
-
-    //std::for_each(expected.begin(), expected.end(), print);
-    //clog << "\n\n";
-    //std::for_each(ls2.begin(), ls2.end(), print);
     assert(ls2 == expected);
 }
 
@@ -89,21 +83,17 @@ void testConsecutiveDuplicates()
     list<int> ls1(data, data + 6), ls2;
     compress(ls1.begin(), ls1.end(), back_inserter(ls2));
     list<int> expected = {1, 2, 1};
-    //std::for_each(expected.begin(), expected.end(), print);
-    //clog << "\n\n";
-    //std::for_each(ls2.begin(), ls2.end(), print);
-
     assert(ls2 == expected);
 }
 
 int main()
 {
-    // pallindrome
-    testEmptyPallindrome();
-    testEvenPallindrome();
-    testOddPallindrome();
-    testEvenNonPallindrome();
-    testOddNonPallindrome();
+    // palindrome
+    testEmptyPalindrome();
+    testEvenPalindrome();
+    testOddPalindrome();
+    testEvenNonPalindrome();
+    testOddNonPalindrome();
 
     // compress
     testEmptyCompress();

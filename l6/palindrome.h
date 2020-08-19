@@ -1,12 +1,9 @@
 #ifndef PALLINDROME_H
 #define PALLINDROME_H
 
-#include <iterator> 
-using namespace std;
-
 template <typename BidirectionalIterator>
 bool 
-pallindrome(
+palindrome(
     BidirectionalIterator first,
     BidirectionalIterator last)
 {

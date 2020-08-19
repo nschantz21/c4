@@ -7,6 +7,7 @@ void compress(
     ForwardIterator last,
     OutputIterator result)
 {
+    // special case empty container
     if (first==last) return;
     // always insert the first element
     ForwardIterator next = first;
