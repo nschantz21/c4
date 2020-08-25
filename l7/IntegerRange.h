@@ -52,14 +52,14 @@ class IntegerRange<T>::iterator:
 {
 public:
     // constructor
-    iterator(T pData)
-        : pData_(&pData)
+    iterator(const T &pData)
+        : pData_(pData)
     {}
 
     // pre-increment
     iterator &operator++()
     {
-        clog << "pre-increment\n";
+        //clog << "pre-increment\n";
         ++pData_;
         return *this;
     }
@@ -67,7 +67,7 @@ public:
     // post-increment
     iterator operator++(int)
     {
-        clog << "post-increment\n";
+        //clog << "post-increment\n";
         iterator tmp(*this);
         operator++();
         return tmp;
@@ -76,33 +76,34 @@ public:
     // equality
     bool operator==(const iterator& rhs) const
     {
-        clog << "equality" << *pData_ << *(rhs.pData_) << "\n";
+        //clog << "equality" << pData_ << (rhs.pData_) << "\n";
         return pData_ == rhs.pData_;
     }
 
     // inequality
     bool operator!=(const iterator& rhs) const
     {
-        clog << "inequality\n";
+        //clog << "inequality\n";
         return pData_ != rhs.pData_;
     }
 
     // dereference - rvalue
     const T &operator*() const
     {
-        clog << "dereference\n";
-        return *pData_;
+        //clog << "dereference\n";
+        return pData_;
     }
     
     // arrow - rvalue
     const T *operator->() const
     {
-        clog << "arrow\n";
-        return pData_;
+        //clog << "arrow\n";
+        T* tmpPtr = pData_;
+        return tmpPtr;
     }
     
 private:
-    T *pData_;
+    T pData_;
 };
 
 
