@@ -44,8 +44,7 @@ private:
     const T low_, high_;
 };
 
-// probably only needs to be a input iterator
-// define input iterator operations
+// only needs to be an input iterator
 template <typename T>
 class IntegerRange<T>::iterator: 
     public  std::iterator<input_iterator_tag, T>
@@ -59,7 +58,6 @@ public:
     // pre-increment
     iterator &operator++()
     {
-        //clog << "pre-increment\n";
         ++pData_;
         return *this;
     }
@@ -67,7 +65,6 @@ public:
     // post-increment
     iterator operator++(int)
     {
-        //clog << "post-increment\n";
         iterator tmp(*this);
         operator++();
         return tmp;
@@ -76,30 +73,32 @@ public:
     // equality
     bool operator==(const iterator& rhs) const
     {
-        //clog << "equality" << pData_ << (rhs.pData_) << "\n";
         return pData_ == rhs.pData_;
     }
 
     // inequality
     bool operator!=(const iterator& rhs) const
     {
-        //clog << "inequality\n";
         return pData_ != rhs.pData_;
     }
 
     // dereference - rvalue
     const T &operator*() const
     {
-        //clog << "dereference\n";
         return pData_;
     }
     
     // arrow - rvalue
     const T *operator->() const
     {
-        //clog << "arrow\n";
-        T* tmpPtr = pData_;
+        static T tmp = pData_;
+        const T* tmpPtr = &tmp;
         return tmpPtr;
+    }
+
+    void print()
+    {
+        clog << "Testfunc"<< pData_ << "\n";
     }
     
 private:
