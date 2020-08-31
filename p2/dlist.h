@@ -1,6 +1,10 @@
+
 #ifndef DLIST_H
 #define DLIST_H
 
+#include <iterator>
+
+using std::bidirectional_iterator_tag;
 namespace Project2
 {
     template <typename T>
@@ -65,6 +69,7 @@ namespace Project2
     
     private:
         void init();
+        void clear();
 
         struct Node
         {
@@ -96,8 +101,37 @@ namespace Project2
  
     };
 
+    // iterator definition
+    template<typename T>
+    class dlist<T>::iterator
+    : public std::iterator<bidirectional_iterator_tag, T>
+    {
+    friend class dlist<T>;
+ 
+    public:
+        typedef const T const_reference;
+         
+        iterator();
+        explicit iterator(typename dlist<T>::Node*);
+        bool operator==(const iterator&) const;
+        bool operator!=(const iterator&) const;
+        T &operator*();
+        const T &operator*() const;
+ 
+        T *operator->();
+        const T *operator->() const;
+        iterator &operator++();
+        const iterator &operator++(int);
+        iterator &operator--();
+        const iterator &operator--(int);
+    
+    private:
+        T& retrieve() const;
+        Node *current;
+    };
+
     // default constructor
-    template<T>
+    template <typename T>
     dlist<T>::dlist()
     {
         // initialize variables
@@ -106,26 +140,29 @@ namespace Project2
 
 
     // copy constructor
-    dlist::dlist(const dlist& other)
+    template <typename T>
+    dlist<T>::dlist(const dlist& other)
     {
         // call the range constructor
-        this->dlist(other.begin(), other.end());
+        *this = dlist<T>(other.begin(), other.end());
     }
 
     // Iterator range constructor
+    template<typename T>
     template<typename InputIterator>
-    dlist::dlist(InputIterator first, InputIterator last)
+    dlist<T>::dlist(InputIterator first, InputIterator last)
     {
         // add all the nodes of the other
         init();
         while (first != last)
         {
-            push_back(first++);
+            push_back(*first++);
         }
     }
 
     // Destructor
-    dlist::~dlist()
+    template <typename T>
+    dlist<T>::~dlist()
     {
         clear();
         delete head;
@@ -134,8 +171,9 @@ namespace Project2
     }
     
     // Copy assginment operator
-    dlist &
-    dlist::operator=(const dlist &other)
+    template <typename T>
+    dlist<T> &
+    dlist<T>::operator=(const dlist &other)
     {
        dlist copy = other;
        std::swap(*this, copy);
@@ -143,30 +181,44 @@ namespace Project2
     }
     
     // empty() & size()
-    bool empty() const
+    template <typename T>
+    bool
+    dlist<T>::empty() const
     {
         return size() == 0;
     }
-    size_type size() const
+
+    template <typename T>
+    typename dlist<T>::size_type
+    dlist<T>::size() const
     {
         return theSize;
     }
     
     // front() & back()
-    T &front()
+    template <typename T>
+    T &
+    dlist<T>::front()
     {
         return *begin();
     }
-    const T &front() const
+    template <typename T>
+    const T &
+    dlist<T>::front() const
     {
         return *begin();
     }
     
-    T &back()
+    template <typename T>
+    T &
+    dlist<T>::back()
     {
         return *--end();
     }
-    const T &back() const
+
+    template <typename T>
+    const T &
+    dlist<T>::back() const
     {
         return *--end();
     }
@@ -179,26 +231,30 @@ namespace Project2
         insert(begin(), dat);
     }
 
+    template <typename T>
     void
-    dlist::pop_front()
+    dlist<T>::pop_front()
     {
         erase(begin());
     }
 
-    void
     template <typename T>
-    dlist::push_back(const T &dat)
+    void
+    dlist<T>::push_back(const T &dat)
     {
         insert(end(), dat);
     }
 
-    void dlist::pop_back()
+    template <typename T>
+    void
+    dlist<T>::pop_back()
     {
         erase(--end());
     }
     
-    iterator 
-    dlist::iterator::insert(iterator itr, const T& val)
+    template <typename T>
+    typename dlist<T>::iterator
+    dlist<T>::insert(typename dlist<T>::iterator itr, const T& val)
     {
         Node *p = itr.current;
         theSize++;
@@ -206,13 +262,14 @@ namespace Project2
         Node* q = new Node(val, p->prev, p);
         // put it in front of the current
         p->prev->next = q;
-        p->prev = p->prev->next;
+        p->prev = q;
         // return the current
-        return p;
+        return iterator(p);
     }
 
-    iterator
-    dlist::erase(iterator itr)
+    template <typename T>
+    typename dlist<T>::iterator
+    dlist<T>::erase(iterator itr)
     {
         Node *p = itr.current;
         iterator retVal{p->next};
@@ -225,13 +282,14 @@ namespace Project2
     }
     
     // Comparision
+    template <typename T>
     bool
-    dlist::operator==(const dlist& rhs) const
+    dlist<T>::operator==(const dlist& rhs) const
     {
-        if (theSize != rhs.theSize) {return false};
+        if (theSize != rhs.theSize) {return false;}
 
         iterator first = begin();
-        iterator rhs_first = rhs.begin()
+        iterator rhs_first = rhs.begin();
         while (first != end())
         {
             if (!(*first == *rhs_first))
@@ -243,66 +301,85 @@ namespace Project2
         return true;
     }
     
+    template <typename T>
     bool
-    dlist::operator!=(const dlist& rhs) const
+    dlist<T>::operator!=(const dlist& rhs) const
     {
         return !(this == rhs);
     }
+
     // lexicographically compare
+    template <typename T>
     bool
-    dlist::operator<(const dlist& rhs) const
+    dlist<T>::operator<(const dlist& rhs) const
     {   
         iterator first1 = begin();
         iterator first2 = rhs.begin();
-        if (first2 == rhs.end() || *first2<*first1) 
+        if (first2 == rhs.end() || *first2 < *first1) 
         {
             return false;
         } else if (*first1 < *first2)
         {
             return true;
         }
-        ++firstl; ++first2;
+        ++first1; ++first2;
 
         return (first2 != rhs.end());
     }
+
+    template <typename T>
     bool
-    dlist::operator<=(const dlist& rhs) const
+    dlist<T>::operator<=(const dlist& rhs) const
     {
         return !(rhs < this);
     }
     
+    template <typename T>
     bool 
-    dlist::operator>(const dlist& rhs) const
+    dlist<T>::operator>(const dlist& rhs) const
     {
         return (rhs < this );
     }
     
+    template <typename T>
     bool
-    dlist::operator>=(const dlist&) const
+    dlist<T>::operator>=(const dlist& rhs) const
     {
         return !(this < rhs);
     }
     
     // Iterators
-    iterator begin()
+    template <typename T>
+    typename dlist<T>::iterator
+    dlist<T>::begin()
     {
-        return head->next;
+        return dlist<T>::iterator(head->next);
     }
-    const iterator begin() const
+
+    template <typename T>
+    const typename dlist<T>::iterator 
+    dlist<T>::begin() const
     {
-        return head->next;
+        return dlist<T>::iterator(head->next);
     }
-    iterator end()
+
+    template <typename T>
+    typename dlist<T>::iterator
+    dlist<T>::end()
     {
-        return tail;
+        return dlist<T>::iterator(tail);
     }
-    const iterator end() const
+
+    template <typename T>
+    const typename dlist<T>::iterator
+    dlist<T>::end() const
     {
-        return tail;
+        return dlist<T>::iterator(tail);
     }
     
+    template <typename T>
     void
-    dlist::init()
+    dlist<T>::init()
     {
         theSize = 0;
         head = new Node;
@@ -311,8 +388,9 @@ namespace Project2
         tail->prev = head;
     }
 
+    template<typename T>
     void
-    dlist::clear()
+    dlist<T>::clear()
     {
         while(!empty())
         {
@@ -321,82 +399,54 @@ namespace Project2
     }
 
 
-    // iterator definition
-    template<typename T>
-    class dlist<T>::iterator
-    : public std::iterator<bidirectional_iterator_tag, T>
-    {
-    friend class dlist<T>;
- 
-    public:
-        typedef const T const_reference;
-         
-        iterator();
-        explicit iterator(typename dlist<T>::node*);
-        bool operator==(const iterator&) const;
-        bool operator!=(const iterator&) const;
-        T &operator*();
-        const T &operator*() const;
- 
-        T *operator->();
-        const T *operator->() const;
-        iterator &operator++();
-        const iterator operator++(int);
-        iterator &operator--();
-        const iterator operator--(int);
-    
-    private:
-        Node *current;
-    };
 
     // constructor
-    template<T>
+    template <typename T>
     dlist<T>::iterator::iterator()
         : current(nullptr)
     {}
 
     // node constructor
-    template<T>
-    const 
-    dlist<T>::iterator::iterator(Node *p)
+    template <typename T>
+    dlist<T>::iterator::iterator(typename dlist<T>::Node *p)
         : current(p)
     {}
 
     // equality
-    template<T>
+    template <typename T>
     bool
-    dlist<T>::iterator::operator==(const iterator &rhs)
+    dlist<T>::iterator::operator==(const iterator &rhs) const
     {
         return current == rhs.current;
     }
     
     // inequality
-    template<T>
+    template <typename T>
     bool
-    dlist<T>::iterator::operator!=(const iterator &rhs)
+    dlist<T>::iterator::operator!=(const iterator &rhs) const 
     {
         return !(*this == rhs);
     }
 
     // operators
     // dereference
-    template<T>
-    iterator&
+    template <typename T>
+    T&
     dlist<T>::iterator::operator*()
     {
         return retrieve();
     }
 
     // const dereference
-    template<T>
-    const iterator&
-    dlist<T>::iterator::operator*()
+    template <typename T>
+    const T&
+    dlist<T>::iterator::operator*() const
     {
         return retrieve();
     }
 
     // arrow
-    template<T>
+    template <typename T>
     T*
     dlist<T>::iterator::operator->()
     {
@@ -404,7 +454,7 @@ namespace Project2
     }
 
     // const arrow
-    template<T>
+    template <typename T>
     const T*
     dlist<T>::iterator::operator->() const
     {
@@ -412,8 +462,8 @@ namespace Project2
     }
 
     // increment
-    template<T>
-    iterator&
+    template <typename T>
+    typename dlist<T>::iterator&
     dlist<T>::iterator::operator++()
     {
         current = current->next;
@@ -421,8 +471,8 @@ namespace Project2
     }
 
     // const increment
-    template<T>
-    const iterator&
+    template <typename T>
+    const typename dlist<T>::iterator&
     dlist<T>::iterator::operator++(int)
     {
         const iterator old = *this;
@@ -432,16 +482,17 @@ namespace Project2
     
 
     // decrement
-    template<T>
-    iterator&
+    template <typename T>
+    typename dlist<T>::iterator&
     dlist<T>::iterator::operator--()
     {
        current = current->prev; 
        return *this;
     }
+
     // const decrement
-    template<T>
-    const iterator&
+    template <typename T>
+    const typename dlist<T>::iterator&
     dlist<T>::iterator::operator--(int)
     {
         const iterator old = *this;
@@ -449,7 +500,7 @@ namespace Project2
         return old;
     }
 
-    template<T>
+    template <typename T>
     T&
     dlist<T>::iterator::retrieve() const
     {
